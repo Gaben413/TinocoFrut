@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+import json
 
 # Create your views here.
 class Funcionario:
@@ -39,3 +40,12 @@ def obterFuncionarios(request):
 
 def obterFuncionariosID(request, id):
     return JsonResponse(funcionariosLista[int(id)].obterData(), safe=False, content_type="application/json")
+
+def registrar_usuario(request):
+    if(request.method == 'POST'):
+        decode_json = request.body.decode('utf-8')
+        registra_usuario = json.loads(decode_json)
+        return JsonResponse({
+            'Status': 'Cadastro Realizado',
+            'registro': registra_usuario
+        })
