@@ -37,6 +37,12 @@ class Compra(models.Model):
     produto = models.CharField(max_length=50)
     quant = models.BigIntegerField()
 
+    def __str__(self):
+        return self.produto
+
 class Venda(models.Model):
     produto = models.CharField(max_length=50)
     quant = models.BigIntegerField()
+
+    def __str__(self):
+        return self.produto

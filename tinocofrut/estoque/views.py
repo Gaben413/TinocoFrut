@@ -1,6 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+import json
 
+from database.models import Produto, Estoque
+from django.core import serializers
+
+'''
 class Produto:
     def __init__(self, id, quant, desc, nome, preco, categoria, tipo):
         self.id = id
@@ -21,7 +26,6 @@ class Produto:
             "categoria": self.categoria,
             "tipo": self.tipo
         }
-    
 
 produtoLista = []
 
@@ -122,17 +126,34 @@ estoqueLista.append(estoque3)
 estoqueLista.append(estoque4)
 estoqueLista.append(estoque5)
 estoqueLista.append(estoque6)
+'''
 
 # Create your views here.
+#GET
 def estoque(request):
-    output = []
-    for est in estoqueLista:
-        output.append(est.obterData())
+    if request.method == 'GET':
+        query_set = Estoque.objects.all()
+        query_Serialize = serializers.serialize('json', query_set)
+        resposta_json = json.loads(query_Serialize)
+        '''
+        output = []
+        for est in estoqueLista:
+            output.append(est.obterData())
+        '''
+        return JsonResponse(resposta_json, safe=False, content_type="application/json")
 
-    return JsonResponse(output, safe=False, content_type="application/json")
-
+#GET
 def estoqueID(request, id):
-    return JsonResponse(estoqueLista[int(id)].obterData(), safe=False, content_type="application/json")
+    if request.method == "GET":
+        query_set = Estoque.objects.get(pk=int(id))
+        query_Serialize = serializers.serialize('json', [query_set])
+        resposta_json = json.loads(query_Serialize)
+        return JsonResponse(resposta_json, safe=False, content_type="application/json")
 
+#GET
 def produto(request, id):
-    return JsonResponse(produtoLista[0].obterData(), content_type="application/json")
+    if request.method == 'GET':
+        query_set = Produto.objects.get(pk=int(id))
+        query_Serialize = serializers.serialize('json', [query_set])
+        resposta_json = json.loads(query_Serialize)
+        return JsonResponse(resposta_json, safe=False, content_type="application/json")
