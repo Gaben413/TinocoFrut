@@ -151,7 +151,15 @@ def estoqueID(request, id):
         return JsonResponse(resposta_json, safe=False, content_type="application/json")
 
 #GET
-def produto(request, id):
+def produto(request):
+    if request.method == 'GET':
+        query_set = Produto.objects.all()
+        query_Serialize = serializers.serialize('json', query_set)
+        resposta_json = json.loads(query_Serialize)
+        return JsonResponse(resposta_json, safe=False, content_type="application/json")
+    
+#GET
+def produtoID(request, id):
     if request.method == 'GET':
         query_set = Produto.objects.get(pk=int(id))
         query_Serialize = serializers.serialize('json', [query_set])
